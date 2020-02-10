@@ -33,10 +33,20 @@ server.get('/api/users', (req, res) =>{
     })
 })
 
-// server.get('/api/users/:id', (req,res) =>{
-//     const { id } = req.params;
-
-// })
+server.get('/api/users/:id', (req,res) =>{
+    const { id } = req.params;
+    Users.findById(id)
+    .then(user =>{
+        if(!user){
+            res.status(400).json({errorMessage:"The user with the specified ID does not exist."})
+        } else if(user){
+            res.status(200).json(user)
+        }
+    })
+    .catch(err =>{
+        res.status(500).json({errorMessage:"The users information could not be retrieved."})
+    })
+})
 
 
 const port = 5000;
