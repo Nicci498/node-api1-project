@@ -22,6 +22,7 @@ server.post('/api/users', (req, res) =>{
         })
     })
 
+//gets a lst of all users
 server.get('/api/users', (req, res) =>{
     Users.find()
     .then(user =>{
@@ -33,6 +34,7 @@ server.get('/api/users', (req, res) =>{
     })
 })
 
+//gets a specific user
 server.get('/api/users/:id', (req,res) =>{
     const { id } = req.params;
     Users.findById(id)
@@ -47,6 +49,23 @@ server.get('/api/users/:id', (req,res) =>{
         res.status(500).json({errorMessage:"The users information could not be retrieved."})
     })
 })
+
+//deletes a specific user
+server.delete('/api/users/:id', (req, res) => {
+    const { id } = req.params;
+    Users.remove(id)
+    .then(removed =>{
+        if(!removed){
+            res.status(400).json({errorMessage:"No user with that ID"})
+        }else{
+            res.status(200).json(removed);
+        }        
+    })
+    .catch(err =>{
+        res.status(500).json({errorMessage:"The user could not be removed"})
+    })
+})
+
 
 
 const port = 5000;
