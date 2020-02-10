@@ -66,6 +66,28 @@ server.delete('/api/users/:id', (req, res) => {
     })
 })
 
+//updates a specific user
+server.put('/api/users/:id', (req, res) =>{
+    const { id } = req.params;
+    const { name, bio } = req.body;
+    if(!name || !bio ){
+        res.status(400).json({errorMessage: "Please provide a username and bio"})
+    } else{
+        Users.update(id, req.body)
+        .then(user =>{
+            if(!user) {
+                res.status(404).json({message:"No user by that ID located"})
+            } else{
+                res.status(200).json(user)
+            }
+        })
+        .catch(err =>{
+            res.status(500).json({errorMessage:"User info could not be modified."})
+        })
+    }
+
+})
+
 
 
 const port = 5000;
