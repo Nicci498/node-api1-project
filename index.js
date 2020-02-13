@@ -1,9 +1,17 @@
 const express = require('express');
+require('dotenv').config();
 
 const Users = require('./data/db.js');//find(),findById(id),insert(),update(id(of user),changes(to apply)),remove(id)
 
 const server = express();
 server.use(express.json());//teaches the server to read json from body
+
+
+server.get('/', (req, res) =>{
+    const greeting = [{message:"This api's info is a the endpoint /api/users and /api/users/:id"}];
+
+    res.status(200).json(greeting);
+});
 
 
 //Creates a user using the information sent inside the request body
@@ -90,7 +98,7 @@ server.put('/api/users/:id', (req, res) =>{
 
 
 
-const port = 5000;
+const port = process.env.PORT || 8000;
 server.listen(port, ()=>{
     console.log(`***server is listening on ${port}****`)
 })
